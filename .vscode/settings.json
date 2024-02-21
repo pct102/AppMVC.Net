@@ -1,0 +1,4 @@
+{
+  "editor.tabCompletion": "off",
+  "typescript.suggest.objectLiteralMethodSnippets.enabled": false
+}
