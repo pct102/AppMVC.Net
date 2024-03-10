@@ -1,0 +1,32 @@
+@* <div class="dropdown">
+  <a class="btn btn-outline-danger dropdown-toggle" data-toggle="dropdown" href="#" 
+    id="managedropdownmenu">
+    Manage
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
+      <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database">
+        Database
+      </a>
+    </div>
+</div> *@
+
+@* <div class="dropdown">
+    <a class="btn btn-outline-danger dropdown-toggle" type="button" id="managedropdownmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Manage
+    </a>
+    <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
+        <a class="dropdown-item" href="@Url.Action("Index", "DbManage", new { area = "Database" })">Database</a>
+    </div>
+</div> *@
+
+<div class="dropdown">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+    Dropdown button
+  </button>
+  <ul class="dropdown-menu bg-primary">
+    <li><a class="dropdown-item" href="@Url.Action("Index", "DbManage", new { area = "Database" })">Database</a></li>
+    <li><a class="dropdown-item" href="@Url.Action("Index", "Contact", new { area = "Contact" })">Contact Management</a></li>
+    <li><a class="dropdown-item" href="#">Link 3</a></li>
+  </ul>
+</div>

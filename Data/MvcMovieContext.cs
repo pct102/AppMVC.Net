@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using App.Models.Blog;
+using App.Models.ContactInfo;
 
 namespace MvcMovie.Data
 {
@@ -19,11 +20,20 @@ namespace MvcMovie.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Category>( entity => {
-                entity.HasIndex(c => c.Slug);
-            });
+                entity.HasIndex(c => c.Slug)
+                    .IsUnique();
+                    });
+
+            // modelBuilder.Entity<PostCategory>( entity => {
+            //     entity.HasIndex(c => c.Slug)
+            //         .IsUnique();
+            // });
         }
 
        public DbSet<Category> Categories { get; set; }
-        
+       public DbSet<Contact> Contacts { get; set; }
+       
+    //    public DbSet<Post> Posts { get; set; }
+    //    public DbSet<PostCategory> PostCategories { get; set; }
     }
 }

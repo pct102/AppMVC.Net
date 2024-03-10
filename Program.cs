@@ -48,6 +48,11 @@ app.MapControllerRoute(
     name: "blog",
     pattern: "blog/{*article}",
     defaults: new { controller = "Blog", action = "Index" });
+
+app.MapControllerRoute(
+    name: "database-manage",
+    pattern: "database-manage/{action=Index}",
+    defaults: new { controller = "DbManage", action = "Index" });
     
 app.MapControllerRoute(
     name: "default",

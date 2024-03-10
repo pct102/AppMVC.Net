@@ -25,23 +25,11 @@ namespace AppMvc.Net.Areas.Blog.Controllers
         // GET: Blog/Category
         public async Task<IActionResult> Index()
         {
-            // var mvcMovieContext = _context.Categories.Include(c => c.ParentCategory);
-            // return View(await mvcMovieContext.ToListAsync());
-
-            // var query = _context.Categories
-            //     .Include(x => x.ParentCategory)
-            //     .Include(x => x.CategoryChildren);
-
-            // var categories = (await query.ToListAsync())
-            //                 .Where(x => x.ParentCategory == null)
-            //                 .ToList();
-
-            // return View(categories);
-
             var categories = await _context.Categories
-                .Include(x => x.ParentCategory)
+                //.Include(x => x.ParentCategory)
                 .Include(x => x.CategoryChildren)
                     .ThenInclude(child => child.CategoryChildren)
+                        .ThenInclude(child2 => child2.CategoryChildren)
                 .Where(x => x.ParentCategory == null)
                 .ToListAsync();
 
@@ -85,9 +73,10 @@ namespace AppMvc.Net.Areas.Blog.Controllers
 
         private async Task<SelectList> CreateParentSelectItems(){
             var categories = await _context.Categories
-                .Include(x => x.ParentCategory)
+                //.Include(x => x.ParentCategory)
                 .Include(x => x.CategoryChildren)
                     .ThenInclude(child => child.CategoryChildren)
+                        .ThenInclude(child2 => child2.CategoryChildren)
                 .Where(x => x.ParentCategory == null)
                 .ToListAsync();
 
@@ -179,11 +168,28 @@ namespace AppMvc.Net.Areas.Blog.Controllers
                 return NotFound();
             }
 
+            bool canUpdate = true;
             if(category.ParentCategoryId == id){
                 ModelState.AddModelError(string.Empty, "ParentCategory should diff with current Category");
+                canUpdate = false;
             }
 
-            if (ModelState.IsValid && category.ParentCategoryId != id)
+            // Check parentId edit is children id then prevent update
+            var categorieChilds = await _context.Categories
+                .Include(x => x.CategoryChildren)
+                .Where(x => x.ParentCategoryId == id)
+                .ToListAsync();
+
+                foreach (var cat in categorieChilds)
+                {
+                    if(cat.Id == category.ParentCategoryId){
+                        ModelState.AddModelError(string.Empty, "ParentCategory should diff with current ChildCategory");
+                        canUpdate = false;
+                        break;
+                    }
+                }
+
+            if (ModelState.IsValid && canUpdate)
             {
                 try
                 {
